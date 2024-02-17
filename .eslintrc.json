@@ -1,3 +1,81 @@
 {
-  "extends": "next/core-web-vitals"
-}
+  // Ambiente que meu código está rodando
+  "env": {
+    "browser": true,// Não dá erro no uso de variáveis globais do navegador, como window e document.
+    "es2021": true,// Não dá erro em recursos do EcmaScript2021.
+    "jest": true// Não dá erro no uso de variáveis globais do Jest, como describe e it.
+  },
+  // Define quais regras o meu projeto vai extender para o ESLint respeitar
+  "extends": [
+    "plugin:@next/next/recommended",
+    "standard",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
+  // Define o analisador de sintaxe
+  "parser": "@typescript-eslint/parser",// Permite ao ESLint entender sintaxe de Typescript
+  // Define as opções do analisador
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true// Permite entender a sintaxe de JSX (JavaScript XML(HTML))
+    },
+    "ecmaVersion": "latest",// Define a versão da sintaxe a ser analisada
+    "sourceType": "module"// Permite uso de import e export
+  },
+  // Define plugins externos
+  "plugins": [
+    "jsx-a11y",// Garante boas práticas de acessibilidade no meu código
+    "@typescript-eslint",// Mais suporte para entender Typescript
+    "react",// Ajuda em algumas regras de React
+    "import"
+  ],
+  "rules": {
+      // Define regras do prettier e lança erros se não forem respeitadas
+      "prettier/prettier": ["error", {
+        "printWidth": 90,// Largura máxima do código
+        "tabWidth": 2,// Tamanho do tab
+        "singleQuote": true,// Aspas simples
+        "trailingComma": "all",// Deixa ter uma vírgula no final dos objetos ou arrays
+        "arrowParens": "always",// Força o parenteses em arrow functions { () => {} }
+        "semi": false,// Remove ponto de vírgula no final das linhas
+        "endOfLine": "auto"// Prettier define a quebra de linha
+        }],
+        // Lança avisos em elementos que não tiverem texto alternativo
+        "jsx-a11y/alt-text": [
+          "warn",
+          {
+            "elements": ["img"],// Define para verificar apenas elementos de imagem
+            "img": ["Image"]
+          }
+        ],
+        
+        // Conjunto de regras para regular o uso de aria (Acessibilidade)
+        "jsx-a11y/aria-props": "warn",
+        "jsx-a11y/aria-proptypes": "warn",
+        "jsx-a11y/aria-unsupported-elements": "warn",
+        "jsx-a11y/role-has-required-aria-props": "warn",
+        "jsx-a11y/role-supports-aria-props": "warn",
+        
+        "react/no-unknown-property": "error",// Evita tentar importar propriedades que não existem
+        "import/no-unresolved": "error"
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        },
+        "import/parsers": {
+          "@typescript-eslint/parser": [".ts", ".tsx", ".d.ts"]
+        },
+        "import/resolver": {
+          "typescript": {
+            "alwaysTryTypes": true,
+            "typescript": true,
+            "node": true
+          }
+        }
+      }
+    }
+    
