@@ -30,7 +30,8 @@
     "jsx-a11y",// Garante boas práticas de acessibilidade no meu código
     "@typescript-eslint",// Mais suporte para entender Typescript
     "react",// Ajuda em algumas regras de React
-    "import"
+    "import",
+    "eslint-plugin-import-helpers"
   ],
   "rules": {
       // Define regras do prettier e lança erros se não forem respeitadas
@@ -60,7 +61,21 @@
         "jsx-a11y/role-supports-aria-props": "warn",
         
         "react/no-unknown-property": "error",// Evita tentar importar propriedades que não existem
-        "import/no-unresolved": "error"
+        "import/no-unresolved": "error",
+
+        "import-helpers/order-imports": [
+          "warn",
+          { // example configuration
+              "newlinesBetween": "always",
+              "groups": [
+                ["/^react/","/^next/"],
+                "module",
+                "/^@shared/",
+                ["parent", "sibling", "index"]
+              ],
+              "alphabetize": { "order": "asc", "ignoreCase": true }
+          }
+      ]
       },
       "settings": {
         "react": {
