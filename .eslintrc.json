@@ -42,8 +42,14 @@
         "trailingComma": "all",// Deixa ter uma vírgula no final dos objetos ou arrays
         "arrowParens": "always",// Força o parenteses em arrow functions { () => {} }
         "semi": false,// Remove ponto de vírgula no final das linhas
-        "endOfLine": "auto"// Prettier define a quebra de linha
-        }],
+        "endOfLine": "auto",// Prettier define a quebra de linha
+        "overrides": [
+          {
+            "files": "*.tsx",
+            "options": { "singleQuote": false }
+          }
+        ]
+      }],
         // Lança avisos em elementos que não tiverem texto alternativo
         "jsx-a11y/alt-text": [
           "warn",
