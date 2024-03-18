@@ -18,26 +18,35 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'credentials',
       credentials: {
-        email: { label: 'email', type: 'text', placeholder: 'email@mail.com' },
-        password: { label: 'Password', type: 'password' },
-        name: { label: 'Name', type: 'text', placeholder: 'jsmith' },
+        email: { label: 'email', type: 'text' },
+        password: { label: 'password', type: 'password' },
+        name: { label: 'Name', type: 'text' },
       },
-      async authorize(credentials, req): Promise<any> {
+      async authorize(credentials) {
+        // Verifica se foram enviados email e senha, caso não, lança erro pedindo os dados
         if (!credentials?.email || !credentials.password)
           throw new Error('Dados de login necessários')
 
+        // Busca no banco email correspondente e coloca na const user
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
           },
         })
 
+        // Se user não existir ou não tiver
+        // um hashPassword (em caso de login com google ou github)
+        // Lança um erro de credenciais não encontradas
         if (!user || !user.hashedPassword)
           throw new Error('Credenciais do usuário não encontradas')
 
+        // Após reunir todos os dados, é feito a comparação do hash guardado
+        // com o hash atual enviado pelo form de login
         const matchPassword = await compare(credentials.password, user.hashedPassword)
+        // Se senha for inválida retorna erro de senha inválida
         if (!matchPassword) throw new Error('Email ou senha inválidos')
 
+        // Dando tudo certo retorna usuário para login
         return user
       },
     }),
