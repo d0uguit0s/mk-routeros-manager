@@ -1,6 +1,5 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { useState } from 'react'
@@ -13,19 +12,21 @@ import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserRegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 interface IUser {
+  name: string
   email: string
   password: string
 }
 
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserRegisterForm({ className, ...props }: UserRegisterFormProps) {
   const { toast } = useToast()
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [data, setData] = useState<IUser>({
+    name: '',
     email: '',
     password: '',
   })
@@ -34,39 +35,57 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setData((prev) => {
       return { ...prev, [e.target.name]: e.target.value }
     })
-    console.log(data)
   }
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
 
-    const res = await signIn<'credentials'>('credentials', {
-      ...data,
-      redirect: false,
+    const req = await fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
     })
 
-    if (res?.error) {
+    const response = await req.json()
+
+    console.log('USER REGISTER FORM', response.ok)
+
+    if (!req.ok) {
       toast({
         title: 'Oooops...',
-        description: res.error,
+        description: response.error,
         variant: 'destructive',
         action: <ToastAction altText="Tente novamente">Tente novamente</ToastAction>,
       })
       setIsLoading(false)
     } else {
-      router.push('/')
+      router.push('/login')
     }
-
-    // setTimeout(() => {
-    //   setIsLoading(false)
-    // }, 3000)
   }
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="name">
+              Name
+            </Label>
+            <Input
+              id="name"
+              placeholder="nome"
+              type="text"
+              autoCapitalize="none"
+              autoCorrect="off"
+              disabled={isLoading}
+              name="name"
+              value={data.name}
+              onChange={handleChange}
+            />
+          </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Email
@@ -102,7 +121,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </div>
           <Button disabled={isLoading}>
             {isLoading && <LuLoader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Entrar
+            Criar conta
           </Button>
         </div>
       </form>

@@ -1,9 +1,8 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
 
-import { buttonVariants } from '@/components/ui/button'
+import AuthButton from '@/components/auth-button'
 import { UserAuthForm } from '@/components/user-auth-form'
-import { cn } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Autenticação',
@@ -14,6 +13,7 @@ export const metadata: Metadata = {
 export default function AuthenticationPage() {
   return (
     <div className="container relative hidden h-screen flex-col items-center justify-center bg-slate-400 md:grid lg:max-w-none lg:grid-cols-1 lg:px-0">
+      <AuthButton page="login" />
       <div className="lg:p-8">
         <div className="mx-auto flex w-1/5 flex-col justify-center space-y-6 rounded-md bg-slate-200 px-6 py-10">
           <div className="flex flex-col space-y-2 text-center">

@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GitHubProvider from 'next-auth/providers/github'
 
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import { compare } from 'bcrypt'
 
 import { prisma } from './prisma'
 
@@ -22,8 +23,21 @@ export const authOptions: NextAuthOptions = {
         name: { label: 'Name', type: 'text', placeholder: 'jsmith' },
       },
       async authorize(credentials, req): Promise<any> {
-        const user = { email: 'doug@mail.com', password: '102030', name: 'Douglas' }
-        console.log('authorize method: ', credentials)
+        if (!credentials?.email || !credentials.password)
+          throw new Error('Dados de login necessários')
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        })
+
+        if (!user || !user.hashedPassword)
+          throw new Error('Credenciais do usuário não encontradas')
+
+        const matchPassword = await compare(credentials.password, user.hashedPassword)
+        if (!matchPassword) throw new Error('Email ou senha inválidos')
+
         return user
       },
     }),
@@ -33,4 +47,7 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.SECRET,
   debug: process.env.NODE_ENV === 'development',
+  pages: {
+    signIn: '/login',
+  },
 }
