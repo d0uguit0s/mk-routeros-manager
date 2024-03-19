@@ -55,7 +55,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
       setIsLoading(false)
     } else {
-      router.push('/')
+      router.push('/dashboard')
     }
 
     // setTimeout(() => {
