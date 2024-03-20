@@ -1,3 +1,4 @@
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import {
   Card,
   CardContent,
@@ -19,6 +20,10 @@ export default function CardClientDevice({
   return (
     <Card className="w-11/12 sm:w-5/12 lg:w-1/3">
       <CardHeader>
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
         <CardTitle>{clientName}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
