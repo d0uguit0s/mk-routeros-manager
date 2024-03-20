@@ -6,6 +6,7 @@ import { ReactNode } from 'react'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 import AuthProvider from '@/providers/auth-provider'
+import { ThemeProvider } from '@/providers/theme-provider'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -23,15 +24,22 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
         )}
       >
-        <AuthProvider>{children}</AuthProvider>
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AuthProvider>{children}</AuthProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

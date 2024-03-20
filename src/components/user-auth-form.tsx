@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
+import { routesDefault } from '@/config/routes-default'
 import { cn } from '@/lib/utils'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -55,7 +56,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       })
       setIsLoading(false)
     } else {
-      router.push('/dashboard')
+      router.push(routesDefault.firstPage)
     }
 
     // setTimeout(() => {

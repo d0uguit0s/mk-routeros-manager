@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { ReactNode } from 'react'
 
+import { ThemeToggleButton } from '@/components/theme-toggle-button'
 import { getCurrentUser } from '@/lib/session'
 
 interface PrivateLayoutProps {
@@ -13,5 +14,10 @@ export default async function PrivateLayout({ children }: PrivateLayoutProps) {
     redirect('/login')
   }
 
-  return <>{children}</>
+  return (
+    <>
+      <ThemeToggleButton />
+      {children}
+    </>
+  )
 }
