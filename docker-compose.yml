@@ -1,22 +1,24 @@
 version: "3.8"
 services:
   client-dev:
+    container_name: client-dev
     build:
       context: .
       dockerfile: Dockerfile.dev
     ports:
       - "3000:3000"
-    volumes:
-      - .:/app
-      - /app/node_modules
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
     environment:
-      - name=value
       - WATCHPACK_POLLING=true
+      - name=value
     env_file:
       - .env.local
     depends_on:
-    - db-dev
+      - db-dev
   client-prod:
+    container_name: client-prod
     build:
       context: .
       dockerfile: Dockerfile.prod
@@ -25,12 +27,13 @@ services:
     env_file:
       - .env
   db-dev:
+    container_name: db-dev
     image: postgres:16.2-alpine3.19
     restart: always
     environment:
       - name=value
     env_file:
-      - .env.local
+      - .env.localdb
     ports:
       - "6520:6520"
     volumes:
