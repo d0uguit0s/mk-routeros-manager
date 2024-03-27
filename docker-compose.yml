@@ -11,6 +11,7 @@ services:
       - /app/node_modules
     environment:
       - name=value
+      - WATCHPACK_POLLING=true
     env_file:
       - .env.local
     depends_on:
@@ -24,14 +25,14 @@ services:
     env_file:
       - .env
   db-dev:
-    image: postgres:16.2
+    image: postgres:16.2-alpine3.19
     restart: always
     environment:
       - name=value
     env_file:
       - .env.local
     ports:
-      - "5432:5432"
+      - "6520:6520"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
