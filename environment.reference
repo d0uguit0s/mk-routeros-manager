@@ -10,3 +10,6 @@ GITHUB_SECRET=""
 SECRET=""
 AUTH_SECRET=""
 NODE_ENV="development"/"production"
+
+# Para development
+WATCHPACK_POLLING=true

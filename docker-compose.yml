@@ -2,6 +2,7 @@ version: "3.8"
 services:
   client-dev:
     container_name: client-dev
+    restart: always
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -9,12 +10,15 @@ services:
       - "3000:3000"
       - "5555:5555"
     environment:
-      - WATCHPACK_POLLING=true
       - name=value
     env_file:
       - .env.development
     depends_on:
       - db-dev
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
   client-prod:
     container_name: client-prod
     build:
