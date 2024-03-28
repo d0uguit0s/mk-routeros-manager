@@ -11,10 +11,10 @@ import { prisma } from './prisma'
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
+    // GitHubProvider({
+    //   clientId: process.env.GITHUB_CLIENT_ID!,
+    //   clientSecret: process.env.GITHUB_SECRET!,
+    // }),
     CredentialsProvider({
       name: 'credentials',
       credentials: {
