@@ -1,4 +1,4 @@
-FROM node:20.11.0
+FROM node:20.11.0-alpine
 
 RUN npm install -g pnpm
 
@@ -8,12 +8,12 @@ COPY package*.json pnpm-lock.yaml ./
 
 RUN pnpm install
 
-COPY prisma ./prisma
+COPY ./prisma prisma
 
 COPY . .
 
-RUN pnpm dlx prisma migrate dev
+# RUN pnpm dlx prisma migrate dev
 
 EXPOSE 3000
-
-CMD [ "pnpm", "run", "dev" ]
+# Se o banco estiver rodando e acessivel ele roda um migrate dev e dps um run dev
+CMD sh -c 'until nc -z db-dev 6520; do sleep 1; done; pnpm dlx prisma migrate dev; pnpm run dev'

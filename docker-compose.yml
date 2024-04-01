@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+      args:
+        - DATABASE_URL
     ports:
       - "3000:3000"
       - "5555:5555"
@@ -16,7 +18,7 @@ services:
     depends_on:
       - db-dev
     volumes:
-      - ./:/app
+      - .:/app
       - /app/node_modules
       - /app/.next
   client-prod:
