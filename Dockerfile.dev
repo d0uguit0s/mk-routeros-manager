@@ -10,9 +10,9 @@ RUN pnpm install
 
 COPY prisma ./prisma
 
-RUN pnpm dlx prisma migrate dev
-
 COPY . .
+
+RUN pnpm dlx prisma migrate dev
 
 EXPOSE 3000
 
