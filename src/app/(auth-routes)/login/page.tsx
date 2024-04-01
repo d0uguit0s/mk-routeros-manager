@@ -15,7 +15,7 @@ export default function AuthenticationPage() {
     <div className="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-1 lg:px-0">
       <AuthButton page="login" />
       <div className="lg:p-8">
-        <div className="mx-auto flex w-1/5 flex-col justify-center space-y-6 rounded-md px-6 py-10">
+        <div className="mx-auto flex w-1/5 flex-col justify-center space-y-6 rounded-md bg-primary-foreground px-6 py-10">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">Entrar</h1>
             <p className="text-sm text-muted-foreground">Entre com seus dados</p>
