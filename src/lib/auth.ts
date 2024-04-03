@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 // eslint-disable-next-line import/no-named-as-default
 import CredentialsProvider from 'next-auth/providers/credentials'
-import GitHubProvider from 'next-auth/providers/github'
+// import GitHubProvider from 'next-auth/providers/github'
 
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { compare } from 'bcrypt'

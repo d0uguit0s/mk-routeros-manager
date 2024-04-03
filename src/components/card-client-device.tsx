@@ -1,3 +1,5 @@
+'use client'
+
 import { HTMLAttributes } from 'react'
 import { IoEnterOutline } from 'react-icons/io5'
 import { LuDot } from 'react-icons/lu'
@@ -11,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-// import { motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 import { Button } from './ui/button'
 
@@ -36,9 +38,16 @@ export default function CardClientDevice({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        {/* <motion.div> */}
-        <LuDot size={30} color="orange" />
-        {/* </motion.div> */}
+        <motion.div
+          animate={{ color: ['orange'] }}
+          transition={{
+            repeat: 10,
+            repeatType: 'loop',
+            duration: 10,
+          }}
+        >
+          <LuDot size={30} color="orange" />
+        </motion.div>
         1ms
       </CardContent>
       <CardFooter>
