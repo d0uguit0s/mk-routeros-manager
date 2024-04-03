@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 
 import { Button } from './ui/button'
 
@@ -36,9 +36,9 @@ export default function CardClientDevice({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <motion.div>
-          <LuDot size={30} color="orange" />
-        </motion.div>
+        {/* <motion.div> */}
+        <LuDot size={30} color="orange" />
+        {/* </motion.div> */}
         1ms
       </CardContent>
       <CardFooter>
