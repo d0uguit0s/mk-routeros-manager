@@ -28,27 +28,37 @@ export function DialogCustom({ className }: DialogCustomProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Novo roteador Mikrotik</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Insira as informações do seu roteador Mikrotik aqui
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              Nome
             </Label>
-            <Input id="name" defaultValue="Pedro Duarte" className="col-span-3" />
+            <Input id="name" placeholder="Exemplo Nome" className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+            <Label htmlFor="ip_address" className="text-right">
+              IP
             </Label>
-            <Input id="username" defaultValue="@peduarte" className="col-span-3" />
+            <Input id="ip_address" placeholder="0.0.0.0" className="col-span-3" />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="ddns_address" className="text-right">
+              DDNS
+            </Label>
+            <Input
+              id="ddns_address"
+              placeholder="meuddns.sn.mynetname.net"
+              className="col-span-3"
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit">Adicionar</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
