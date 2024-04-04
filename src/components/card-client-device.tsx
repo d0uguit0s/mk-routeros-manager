@@ -1,7 +1,8 @@
 'use client'
 
-import { HTMLAttributes } from 'react'
+import { HTMLAttributes, forwardRef } from 'react'
 import { IoEnterOutline } from 'react-icons/io5'
+import { IconBaseProps, IconType } from 'react-icons/lib'
 import { LuDot } from 'react-icons/lu'
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
@@ -22,6 +23,10 @@ interface CardClientDeviceProps extends HTMLAttributes<HTMLDivElement> {
   description: string
 }
 
+const Dot = forwardRef((props, ref) => <LuDot {...props} ref={ref} />)
+
+const DotIcon = motion(Dot)
+
 export default function CardClientDevice({
   className,
   clientName,
@@ -38,16 +43,13 @@ export default function CardClientDevice({
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center">
-        <motion.div
-          animate={{ color: ['orange'] }}
-          transition={{
-            repeat: 10,
-            repeatType: 'loop',
-            duration: 10,
-          }}
-        >
-          <LuDot size={30} color="orange" />
-        </motion.div>
+        {/* <motion.div
+          className="h-96 w-96 bg-white"
+          initial={{ x: -100 }}
+          animate={{ x: 100 }}
+        ></motion.div>
+        <LuDot size={30} color="orange" /> */}
+        <DotIcon size={30} color="orange" animate={{ size: [30, 50, 30] }} />
         1ms
       </CardContent>
       <CardFooter>
