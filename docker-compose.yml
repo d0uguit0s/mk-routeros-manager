@@ -1,24 +1,5 @@
 version: "3.8"
 services:
-  client-dev:
-    container_name: client-dev
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-      args:
-        - DATABASE_URL
-    ports:
-      - "3000:3000"
-      - "5555:5555"
-    environment:
-      - name=value
-    env_file:
-      - .env.development
-    depends_on:
-      - db-dev
-    volumes:
-      - .:/app
   db-dev:
     container_name: db-dev
     image: postgres:16.2-alpine
