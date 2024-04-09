@@ -28,7 +28,7 @@ const MyAnimatedIcon = () => {
     <IconContext.Provider value={{ size: '2em', color: '#00ff00' }}>
       <motion.div
         animate={{ opacity: [1, 0], scale: [1, 4] }}
-        transition={{ repeat: Infinity, duration: 1, repeatDelay: 0.1 }}
+        transition={{ repeat: Infinity, duration: 3, repeatDelay: 0.1 }}
       >
         <LuDot />
       </motion.div>
