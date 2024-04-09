@@ -130,7 +130,7 @@ export function TableView() {
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} hoverEffect={false}>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
