@@ -1,5 +1,4 @@
 import { HTMLAttributes } from 'react'
-
 import { TableView } from './table-view'
 
 interface ShowDataProps extends HTMLAttributes<HTMLDivElement> {}
