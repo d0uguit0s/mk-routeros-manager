@@ -6,6 +6,7 @@ import { ReactNode } from 'react'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
 import AuthProvider from '@/providers/auth-provider'
+import { TanstackQueyProvider } from '@/providers/tanstack-query-provider'
 import { ThemeProvider } from '@/providers/theme-provider'
 
 const fontSans = FontSans({
@@ -24,22 +25,24 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-br" suppressHydrationWarning>
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased',
           fontSans.variable,
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AuthProvider>{children}</AuthProvider>
-          <Toaster />
-        </ThemeProvider>
+        <TanstackQueyProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AuthProvider>{children}</AuthProvider>
+            <Toaster />
+          </ThemeProvider>
+        </TanstackQueyProvider>
       </body>
     </html>
   )
