@@ -1,0 +1,7 @@
+// export const routesDefault = {
+//   firstPage: '/clients-devices',
+// }
+
+export const ROOT = '/'
+export const PUBLIC_ROUTES = ['/', '/login', '/register']
+export const DEFAULT_REDIRECT = '/clients-devices'
