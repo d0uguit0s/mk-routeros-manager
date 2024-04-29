@@ -1,4 +1,6 @@
-import { HTMLAttributes } from 'react'
+'use client'
+
+import { HTMLAttributes, useState } from 'react'
 import { LuPlus } from 'react-icons/lu'
 
 import { Button } from '@/components/ui/button'
@@ -11,20 +13,28 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { CircularButtonCustom } from './buttons-custom'
 
 interface DialogCustomProps extends HTMLAttributes<HTMLDivElement> {
   // Aqui você pode adicionar mais propriedades se necessário
 }
 
 export function DialogCustom({ className }: DialogCustomProps) {
+  const [open, setOpen] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  function handleClose() {
+    setOpen(false)
+  }
+
+  function handleOpen() {
+    setOpen(true)
+  }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild className={className}>
-        <Button variant="outline" className="h-16 w-16 rounded-full p-0">
-          <LuPlus size={30} />
-        </Button>
+        <CircularButtonCustom element={<LuPlus size={30} />} onClick={handleOpen} />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -33,30 +43,7 @@ export function DialogCustom({ className }: DialogCustomProps) {
             Insira as informações do seu roteador Mikrotik aqui
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Nome
-            </Label>
-            <Input id="name" placeholder="Exemplo Nome" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="ip_address" className="text-right">
-              IP
-            </Label>
-            <Input id="ip_address" placeholder="0.0.0.0" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="ddns_address" className="text-right">
-              DDNS
-            </Label>
-            <Input
-              id="ddns_address"
-              placeholder="meuddns.sn.mynetname.net"
-              className="col-span-3"
-            />
-          </div>
-        </div>
+        
         <DialogFooter>
           <Button type="submit">Adicionar</Button>
         </DialogFooter>
