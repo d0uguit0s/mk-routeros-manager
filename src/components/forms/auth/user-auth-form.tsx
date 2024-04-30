@@ -11,69 +11,23 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
-// import { routesDefault } from '@/config/routes-default'
-import { cn } from '@/lib/utils'
 import { loginSchema } from '@/types/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-interface IUser {
-  email: string
-  password: string
-}
-
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserAuthForm() {
   const { toast } = useToast()
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [data, setData] = useState<IUser>({
-    email: '',
-    password: '',
-  })
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value }
-    })
-    console.log(data)
-  }
-
-  // async function onSubmit(event: React.SyntheticEvent) {
-  //   event.preventDefault()
-  //   setIsLoading(true)
-
-  //   const res = await signIn<'credentials'>('credentials', {
-  //     ...data,
-  //     redirect: false,
-  //   })
-
-  //   if (res?.error) {
-  //     toast({
-  //       title: 'Oooops...',
-  //       description: res.error,
-  //       variant: 'destructive',
-  //       action: <ToastAction altText="Tente novamente">Tente novamente</ToastAction>,
-  //     })
-  //     setIsLoading(false)
-  //   } else {
-  //     router.push('/')
-  //   }
-  // }
-
-  // 1. Define your form.
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -82,15 +36,29 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     },
   })
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    setIsLoading(true)
+
+    const res = await signIn<'credentials'>('credentials', {
+      ...values,
+      redirect: false,
+    })
+
+    if (res?.error) {
+      toast({
+        title: 'Oooops...',
+        description: res.error,
+        variant: 'destructive',
+        duration: 5000,
+      })
+      setIsLoading(false)
+    } else {
+      router.push('/')
+    }
   }
 
   return (
-    <div className={cn('grid gap-6', className)} {...props}>
+    <div className="grid gap-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

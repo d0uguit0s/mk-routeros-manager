@@ -37,8 +37,9 @@ export const authOptions: NextAuthOptions = {
         // Se user não existir ou não tiver
         // um hashPassword (em caso de login com google ou github)
         // Lança um erro de credenciais não encontradas
-        if (!user || !user.hashedPassword)
+        if (!user || !user.hashedPassword) {
           throw new Error('Credenciais do usuário não encontradas')
+        }
 
         // Após reunir todos os dados, é feito a comparação do hash guardado
         // com o hash atual enviado pelo form de login
@@ -53,10 +54,31 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
+    maxAge: 12 * 60 * 60, // 12 horas
   },
-  secret: process.env.SECRET,
+  jwt: {
+    secret: process.env.SECRET,
+    maxAge: 12 * 60 * 60, // 12 horas
+  },
   debug: process.env.NODE_ENV === 'development',
   pages: {
     signIn: '/login',
+  },
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      // Persist the OAuth access_token and or the user id to the token right after signin
+      if (account) {
+        token.accessToken = account.access_token
+        token.id = profile.id
+      }
+      return token
+    },
+    async session({ session, token, user }) {
+      // Send properties to the client, like an access_token and user id from a provider.
+      session.accessToken = token.accessToken
+      session.user.id = token.id
+
+      return session
+    },
   },
 }
