@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { LuLoader2, LuGithub } from 'react-icons/lu'
 
+import { CustomInput } from '@/components/ui-custom/custom-input'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -15,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import { loginSchema } from '@/types/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -67,7 +67,7 @@ export function UserAuthForm() {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
+                  <CustomInput
                     id="email"
                     placeholder="name@example.com"
                     type="email"
@@ -89,12 +89,11 @@ export function UserAuthForm() {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input
+                  <CustomInput
                     id="password"
-                    placeholder="senha"
+                    placeholder="••••••••"
                     type="password"
                     autoCapitalize="none"
-                    autoComplete="email"
                     autoCorrect="off"
                     disabled={isLoading}
                     {...field}
