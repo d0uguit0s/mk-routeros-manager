@@ -1,8 +1,7 @@
 'use client'
 
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { LuLoader2, LuGithub } from 'react-icons/lu'
 
@@ -16,43 +15,54 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
-import { loginSchema } from '@/types/schema'
+import { registerSchema } from '@/types/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-export function UserAuthForm() {
+interface UserRegisterFormProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function UserRegisterForm({ className, ...props }: UserRegisterFormProps) {
   const { toast } = useToast()
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const form = useForm<z.infer<typeof loginSchema>>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
     },
   })
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
     setIsLoading(true)
 
-    const res = await signIn<'credentials'>('credentials', {
-      ...values,
-      redirect: false,
+    const req = await fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(values),
     })
 
-    if (res?.error) {
+    const response = await req.json()
+
+    console.log('USER REGISTER FORM', response.ok)
+
+    if (!req.ok) {
       toast({
         title: 'Oooops...',
-        description: res.error,
+        description: response.error,
         variant: 'destructive',
-        duration: 5000,
+        action: <ToastAction altText="Tente novamente">Tente novamente</ToastAction>,
       })
       setIsLoading(false)
     } else {
-      router.push('/')
+      router.push('/login')
     }
   }
 
@@ -60,6 +70,26 @@ export function UserAuthForm() {
     <div className="grid gap-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    id="name"
+                    placeholder="name"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
