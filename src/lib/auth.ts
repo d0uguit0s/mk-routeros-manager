@@ -56,29 +56,30 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 12 * 60 * 60, // 12 horas
   },
-  jwt: {
-    secret: process.env.SECRET,
-    maxAge: 12 * 60 * 60, // 12 horas
-  },
+  secret: process.env.SECRET,
   debug: process.env.NODE_ENV === 'development',
   pages: {
     signIn: '/login',
   },
-  callbacks: {
-    async jwt({ token, account, profile }) {
-      // Persist the OAuth access_token and or the user id to the token right after signin
-      if (account) {
-        token.accessToken = account.access_token
-        token.id = profile.id
-      }
-      return token
-    },
-    async session({ session, token, user }) {
-      // Send properties to the client, like an access_token and user id from a provider.
-      session.accessToken = token.accessToken
-      session.user.id = token.id
+  // callbacks: {
+  //   async jwt({ token, user }) {
+  //     // Se o usuário acabou de fazer login, definir a data de expiração do token
+  //     if (user) {
+  //       token.expires = Date.now() + 12 * 60 * 60 * 1000; // 12 horas
+  //     }
 
-      return session
-    },
-  },
+  //     // Aqui você pode verificar se o usuário está ativado ou não
+  //     // Se o usuário não estiver ativado, não renove o token
+  //     // Você precisará implementar a lógica para verificar o status de ativação do usuário
+
+  //     return token;
+  //   },
+  //   async session({ session, token, user }) {
+  //     // Send properties to the client, like an access_token and user id from a provider.
+  //     session.accessToken = token.accessToken
+  //     session.user.id = token.id
+
+  //     return session
+  //   },
+  // },
 }
