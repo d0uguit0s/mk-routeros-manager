@@ -1,10 +1,11 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { HTMLAttributes, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { LuLoader2, LuGithub } from 'react-icons/lu'
 
+import { CustomInput } from '@/components/ui-custom/custom-input'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -14,16 +15,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 import { registerSchema } from '@/types/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-interface UserRegisterFormProps extends HTMLAttributes<HTMLDivElement> {}
-
-export function UserRegisterForm({ className, ...props }: UserRegisterFormProps) {
+export function UserRegisterForm() {
   const { toast } = useToast()
   const router = useRouter()
 
@@ -35,6 +33,7 @@ export function UserRegisterForm({ className, ...props }: UserRegisterFormProps)
       name: '',
       email: '',
       password: '',
+      passwordConfirmation: '',
     },
   })
 
@@ -75,15 +74,15 @@ export function UserRegisterForm({ className, ...props }: UserRegisterFormProps)
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Nome</FormLabel>
                 <FormControl>
-                  <Input
+                  <CustomInput
+                    {...field}
                     id="name"
                     placeholder="name"
                     autoCapitalize="none"
                     autoCorrect="off"
                     disabled={isLoading}
-                    {...field}
                   />
                 </FormControl>
                 <FormMessage />
@@ -97,7 +96,7 @@ export function UserRegisterForm({ className, ...props }: UserRegisterFormProps)
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
+                  <CustomInput
                     id="email"
                     placeholder="name@example.com"
                     type="email"
@@ -119,14 +118,35 @@ export function UserRegisterForm({ className, ...props }: UserRegisterFormProps)
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input
+                  <CustomInput
                     id="password"
-                    placeholder="senha"
+                    placeholder="••••••••"
                     type="password"
                     autoCapitalize="none"
-                    autoComplete="email"
                     autoCorrect="off"
                     disabled={isLoading}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="passwordConfirmation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirmar senha</FormLabel>
+                <FormControl>
+                  <CustomInput
+                    id="passwordConfirmation"
+                    placeholder="••••••••"
+                    type="password"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    disabled={isLoading}
+                    changeTrigger
                     {...field}
                   />
                 </FormControl>
