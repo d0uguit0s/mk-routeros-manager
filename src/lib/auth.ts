@@ -1,10 +1,12 @@
 import { NextAuthOptions } from 'next-auth'
 // eslint-disable-next-line import/no-named-as-default
 import CredentialsProvider from 'next-auth/providers/credentials'
+
 // import GitHubProvider from 'next-auth/providers/github'
 
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import { compare } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
 
 import { prisma } from './prisma'
 
@@ -54,32 +56,42 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 12 * 60 * 60, // 12 horas
+    maxAge: 60 * 60 * 12, // 12 horas
   },
-  secret: process.env.SECRET,
   debug: process.env.NODE_ENV === 'development',
   pages: {
     signIn: '/login',
   },
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     // Se o usuário acabou de fazer login, definir a data de expiração do token
-  //     if (user) {
-  //       token.expires = Date.now() + 12 * 60 * 60 * 1000; // 12 horas
-  //     }
-
-  //     // Aqui você pode verificar se o usuário está ativado ou não
-  //     // Se o usuário não estiver ativado, não renove o token
-  //     // Você precisará implementar a lógica para verificar o status de ativação do usuário
-
-  //     return token;
-  //   },
-  //   async session({ session, token, user }) {
-  //     // Send properties to the client, like an access_token and user id from a provider.
-  //     session.accessToken = token.accessToken
-  //     session.user.id = token.id
-
-  //     return session
-  //   },
-  // },
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      // Se o token já expirou
+      if (token && token.exp * 1000 < Date.now()) {
+        const accessToken = sign({ userId: token.userId }, 'your-secret-key', {
+          expiresIn: '24h',
+        })
+        token.accessToken = accessToken
+        return {
+          ...token,
+        }
+      }
+      // Se o usuário acabou de fazer login, defina a data de expiração do token
+      if (user) {
+        const accessToken = sign({ userId: user.id }, 'your-secret-key', {
+          expiresIn: '24h',
+        })
+        token.accessToken = accessToken
+        return {
+          ...token,
+        }
+      }
+      // Caso contrário, retorne o token existente
+      return token
+    },
+    session: async ({ session, token }) => {
+      token.dateTest = session.expires
+      // token.dateTest = expiresDate.getDate()
+      session.user = token
+      return { ...session }
+    },
+  },
 }

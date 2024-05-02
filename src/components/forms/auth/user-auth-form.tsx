@@ -52,7 +52,8 @@ export function UserAuthForm() {
       })
       setIsLoading(false)
     } else {
-      router.push('/')
+      console.log(res)
+      router.push('/clients-devices')
     }
   }
 
